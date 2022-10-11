@@ -2,7 +2,7 @@ var autoSpawner = {
 
     /** @param {String} roleId **/
     /** @param {int} creepsCount **/
-    run: function(roleId, creepsCount) {
+    run: function(roleId, creepsCount, body) {
 
         for(var name in Memory.creeps) {
             if(!Game.creeps[name]) {
@@ -14,9 +14,8 @@ var autoSpawner = {
         var creepsOfType = _.filter(Game.creeps, (creep) => creep.memory.role == roleId);
 
         if(creepsOfType.length < creepsCount) {
-            var newName = (roleId.toString() + "_" + Game.time + "_2");
-            console.log('Spawning new creep: ' + newName);
-            Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], newName,
+            var newName = (roleId.toString() + "_" + Game.time);
+            Game.spawns['Spawn1'].spawnCreep(body, newName,
                 {memory: {role: roleId}});
         }
 
