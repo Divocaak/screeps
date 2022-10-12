@@ -36,9 +36,13 @@ module.exports.loop = function () {
     }
 
     // auto spawn
-    autoSpawn.run("harvester", 2, leveling[Game.spawns["Spawn1"].room.energyCapacityAvailable]);
-    autoSpawn.run("builder", 1, leveling[Game.spawns["Spawn1"].room.energyCapacityAvailable]);
-    autoSpawn.run("upgrader", 1, leveling[Game.spawns["Spawn1"].room.energyCapacityAvailable]);
+    var energyCost = Game.spawns["Spawn1"].room.energyCapacityAvailable;
+    if(!leveling[energyCost]){
+        energyCost -= 50;
+    }
+    autoSpawn.run("harvester", 2, leveling[energyCost]);
+    autoSpawn.run("builder", 1, leveling[energyCost]);
+    autoSpawn.run("upgrader", 1, leveling[energyCost]);
 
     // roles
     for(var name in Game.creeps) {

@@ -1,7 +1,8 @@
 var findClosestEnergy = {
     /** @param {Creep} creep **/
-    getSource: function(creep) {
-        var sources = creep.room.find(FIND_SOURCES);
+    /** @param {any} type **/
+    getDestination: function(creep, type) {
+        var sources = creep.room.find(type);
         var savedId = 0;
         var savedDist;
         for(var i = 0; i < sources.length; i++){
@@ -16,8 +17,6 @@ var findClosestEnergy = {
                 savedId = i;
             }
         }
-        
-        //console.log(creep.name + " move to " + sources[savedId].pos);
         return sources[savedId];
     }
 };

@@ -4,28 +4,29 @@ var roleBuilder = {
     /** @param {Creep} creep **/
     run: function (creep) {
 
-        /* if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
+        if(creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.building = false;
-            creep.say('🔄 harvest');
         }
-        if (!creep.memory.building && creep.store.getFreeCapacity() == 0) {
+        if(!creep.memory.building && creep.store.getFreeCapacity() == 0) {
             creep.memory.building = true;
-            creep.say('🚧 build');
-        } */
+        }
 
-        if (creep.store.getFreeCapacity() > 0) {
+
+
+
+        if (!creep.memory.building) {
             // má místo
-            var source = findClosest.getSource(creep);
+            var source = findClosest.getDestination(creep, FIND_SOURCES);
             if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' } });
             }
         } else {
             // nemá místo
-            var targetsBuild = creep.room.find(FIND_CONSTRUCTION_SITES);
-            if (targetsBuild.length) {
+            var toBuild = findClosest.getDestination(creep, FIND_CONSTRUCTION_SITES);
+            if (toBuild != null) {
                 // build
-                if (creep.build(targetsBuild[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targetsBuild[0], { visualizePathStyle: { stroke: '#ffffff' } });
+                if (creep.build(toBuild) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(toBuild, { visualizePathStyle: { stroke: '#ffffff' } });
                 }
             } else {
                 // store
@@ -35,6 +36,7 @@ var roleBuilder = {
                             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                     }
                 });
+                
                 if (targetsStore.length > 0) {
                     if (creep.transfer(targetsStore[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(targetsStore[0], { visualizePathStyle: { stroke: '#ffffff' } });
